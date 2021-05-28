@@ -2,7 +2,7 @@
   <div class="wrap-card">
     <br>
     <i class="fas fa-heart absolute remove favorit" @click="() => {remove_favorite()}" v-if="isfavorit"></i>
-    <i class="fas fa-heart absolute add favorit" @click="() => {add_favorite()}" v-else></i>
+    <i class="fas fa-heart absolute add favorit" @click="() => (add_favorite())" v-else></i>
     <router-link :to="{ name: 'Hero', params: { people_id: data.id } }" class="card text-dark" style="width: 17rem;">
       <img :src="data.img" class="card-img-top" :alt="data.img">
       <div class="card-body">
@@ -24,7 +24,8 @@ export default {
   }),
 
   computed: {
-    ...mapState(['favorite', 'expectation']),
+    ...mapState(['favorite']),
+
   },
 
   created() {
@@ -36,40 +37,38 @@ export default {
     })
   },
 
-  updated() {
-    this.favorite.forEach(item => {
-      if (item.id+'' === this.data.id+'') {
-        return this.isfavorit = true
-      }
-    })
-  },
-
   methods: {
     add_favorite() {
       let data = {
         'hero': Object.assign({}, this.data)
       }
-      this.$store.state.expectation = false
-      this.$store.dispatch('addFavorite', data);
-      this.checkFavorite()
+      this.$store.dispatch('addFavorite', data)
+      this.isfavorit = true
     },
     remove_favorite() {
-      console.log('remove');
-    },
-    checkFavorite() {
-      setTimeout(() => {
-        if (this.expectation) {
-          this.$store.dispatch('getFavorite');
-          this.favorite.forEach(item => {
-            if (item.id+'' === this.data.id+'') {
-              return this.isfavorit = true
-            }
-          })
-        } else {
-          this.checkFavorite()
-        }
-      }, 150)
+      let data = {
+        'hero': Object.assign({}, this.data)
+      }
+      this.$store.dispatch('removeFavorite', data)
+      this.isfavorit = false
     }
+  //
+  //   checkFavorite() {
+  //     setTimeout(() => {
+  //       if (this.expectation) {
+  //         this.$store.dispatch('getFavorite');
+  //         this.favorite.forEach(item => {
+  //           if (item.id+'' === this.data.id+'') {
+  //             this.isfavorit = ! this.isfavorit
+  //             console.log(this.isfavorit)
+  //             return false;
+  //           }
+  //         })
+  //       } else {
+  //         this.checkFavorite()
+  //       }
+  //     }, 150)
+  //   }
   },
 
   props: {
@@ -106,6 +105,6 @@ a:hover{
   color: #343a40;
 }
 .remove{
-  color: red;
+  color: #ff2d2d;
 }
 </style>

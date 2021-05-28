@@ -1,8 +1,24 @@
 <template>
   <section class="pagination">
-    <button type="button" v-for="i in count" :key="i">{{i}}</button>
-    <hr>
-    {{selected_page}}
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item">
+          <button class="page-link" aria-label="Previous" v-if="pagination.prev != null" @click="() => {prev_page()}">
+            <span aria-hidden="true">&laquo;</span>
+          </button>
+        </li>
+        <li class="page-item"><button class="page-link" disabled v-if="pagination.prev != null">...</button></li>
+        <li class="page-item"><button class="page-link" v-if="pagination.prev != null"  @click="() => {prev_page()}">{{pagination.prev}}</button></li>
+        <li class="page-item active"><button class="page-link">{{pagination.now}}</button></li>
+        <li class="page-item"><button class="page-link" v-if="pagination.next != null">{{pagination.next}}</button></li>
+        <li class="page-item"><button class="page-link" disabled v-if="pagination.next != null" @click="() => {next_page()}">...</button></li>
+        <li class="page-item">
+          <button class="page-link" aria-label="Next" v-if="pagination.next != null" @click="() => {next_page()}">
+            <span aria-hidden="true">&raquo;</span>
+          </button>
+        </li>
+      </ul>
+    </nav>
   </section>
 </template>
 
@@ -13,37 +29,39 @@ export default {
   name: 'Pagination',
 
   data: () => ({
-    count: []
   }),
 
   computed: {
     ...mapState(['pagination'])
   },
 
-  created() {
-    for (let i = 1; i <= this.pagination.count; i++) {
-      this.count.push(i);
+  methods: {
+    prev_page() {
+      let data = {
+        'page_number': this.pagination.prev
+      }
+      this.$store.dispatch('getHeroesPage', data)
+    },
+    next_page() {
+      let data = {
+        'page_number': this.pagination.next
+      }
+      this.$store.dispatch('getHeroesPage', data)
     }
   },
 
-  props: {
-    selected_page: Number
+  created() {
+
   }
 }
 </script>
 
 <style scoped>
-.wrap-card{
-  position: relative;
-  margin: 30px 60px 0 0;
+.pagination {
+  margin-top: 30px;
+  padding-right: 10px;
 }
-.card{
-  position: relative;
-}
-.absolute{
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 100000;
+ul{
+  margin: 0;
 }
 </style>
