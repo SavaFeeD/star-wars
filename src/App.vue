@@ -23,8 +23,8 @@
             <h5>Filter</h5>
             <select class="form-control" v-model="filter">
               <option selected value="none">None</option>
-              <option value="w">Female Heroes</option>
-              <option value="m">Male Heroes</option>
+              <option value="female">Female Heroes</option>
+              <option value="male">Male Heroes</option>
             </select>
           </div>
         </div>
@@ -47,11 +47,9 @@ export default {
 
   created() {
     this.$store.dispatch('checkLocalFavorite')
-  }
+  },
   updated() {
-    if (filter != 'none') {
-      return true
-    }
+    this.$store.dispatch('setFilterMode', this.filter)
   }
 }
 </script>

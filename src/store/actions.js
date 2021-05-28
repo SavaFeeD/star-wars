@@ -35,6 +35,10 @@ let actions = {
   addFavorite({commit}, data) {
     data['all_heroes'] = JSON.parse(localStorage.getItem(`my_favorite_heroes`))
     commit('ADD_FAVORITE', data);
+  },
+
+  setFilterMode({commit}, mode) {
+    commit('SET_FILTER_MODE', mode);
   }
 }
 

@@ -1,8 +1,10 @@
 <template>
   <div class="home">
-
-    <div class="d-flex flex-wrap justify-content-center">
+    <div class="d-flex flex-wrap justify-content-center" v-if="filter_mode == 'none'">
       <Card v-for="(hero_, id) in heroes" :data="hero_" :key="id"/>
+    </div>
+    <div class="d-flex flex-wrap justify-content-center" v-else>
+      <Card v-for="(hero_, id) in filter_mode" :data="hero_" :key="id"/>
     </div>
 
     <Pagination :selected_page="1" />
@@ -23,7 +25,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['heroes', 'pagination'])
+    ...mapState(['heroes', 'pagination', 'filter_mode']),
   },
 
   created() {
