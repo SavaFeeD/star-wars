@@ -24,6 +24,7 @@
               <option selected value="none">None</option>
               <option value="female">Female Heroes</option>
               <option value="male">Male Heroes</option>
+              <option value="other">Other Heroes</option>
             </select>
           </div>
         </div>
