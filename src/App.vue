@@ -70,7 +70,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['pagination', 'search_result']),
+    ...mapState(['pagination', 'search_result', 'homeworlds_list']),
     searchHandler() {
       let data = {
         'people_name': this.search

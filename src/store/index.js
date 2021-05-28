@@ -21,7 +21,9 @@ export default createStore({
     },
     expectation: false,
     filter_mode: 'none',
-    search_result: []
+    search_result: [],
+    homeworlds_list: [],
+    updatecards: false
   },
   mutations: {
     SET_PAGINATION(state, data) {
@@ -42,8 +44,11 @@ export default createStore({
         people['id'] = id
         people['img'] = `${heroes_img_api}/assets/img/characters/${id}.jpg`
       });
-      console.log(data);
       state.heroes = data
+    },
+
+    SET_HOMEWORDLS(state, homeworld) {
+      state.homeworlds_list.push(homeworld)
     },
 
     SET_SEARCH_RESULT(state, data) {
@@ -52,7 +57,6 @@ export default createStore({
         people['id'] = id
         people['img'] = `${heroes_img_api}/assets/img/characters/${id}.jpg`
       });
-      console.log(data);
       state.search_result = data
     },
 
@@ -64,8 +68,6 @@ export default createStore({
     },
 
     ADD_FAVORITE(state, data) {
-      console.log('ADD', data);
-
       let heroes = data.all_heroes
       heroes.push(data.hero)
 
@@ -76,8 +78,6 @@ export default createStore({
     },
 
     REMOVE_FAVORITE(state, data) {
-      console.log('REMOVE', data);
-
       let index = state.favorite.findIndex(favorite => favorite.id == data.hero.id)
       state.favorite.splice(index, 1)
 

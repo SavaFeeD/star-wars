@@ -35,6 +35,7 @@ export default {
     this.$store.dispatch('getHeroesPage', data)
   },
 
+
   components: {
     Card
   }

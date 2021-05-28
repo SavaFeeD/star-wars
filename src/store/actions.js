@@ -13,7 +13,7 @@ let actions = {
   },
 
   getHeroesPage({commit}, data) {
-    axios.get(`${heroes_api}/people/?page=${data.page_number}`).then(res => {
+    return axios.get(`${heroes_api}/people/?page=${data.page_number}`).then(res => {
       commit('SET_HEROES', res.data.results);
       commit('SET_PAGINATION', {
         'now': data.page_number,
@@ -27,11 +27,18 @@ let actions = {
     })
   },
 
-  getHero({commit}, data) {
-    axios.get(`${heroes_api}/people/${data.people_id}/`).then(res => {
-      commit('SET_STATE', ['hero', res.data]);
+  getHomeWorld({commit}, data) {
+    return axios.get(`${heroes_api}/planets/${data.planet_id}/`).then(res => {
+      let homeworld = {
+        'people_id': data.people_id,
+        'world': {
+          'name': res.data.name,
+          'terrain': res.data.terrain
+        }
+      }
+      commit('SET_HOMEWORDLS', homeworld);
     }).catch(error => {
-      commit('SET_ALERT', error.response);
+      commit('SET_ALERT', error);
     })
   },
 
@@ -56,11 +63,15 @@ let actions = {
   },
 
   searchPeople({commit}, data) {
-    axios.get(`${heroes_api}/people/?search=${data.people_name}`).then(res => {
+    return axios.get(`${heroes_api}/people/?search=${data.people_name}`).then(res => {
       commit('SET_SEARCH_RESULT', res.data.results);
     }).catch(error => {
       commit('SET_ALERT', error.response);
     })
+  },
+
+  voidProba({commit}) {
+    commit('SET_HOMEWORDLS', [])
   }
 }
 

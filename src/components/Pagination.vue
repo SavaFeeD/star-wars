@@ -47,6 +47,7 @@ export default {
         'page_number': this.pagination.next
       }
       this.$store.dispatch('getHeroesPage', data)
+      this.$store.dispatch('voidProba')
     }
   },
 

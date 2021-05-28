@@ -3,12 +3,17 @@
     <br>
     <i class="fas fa-heart absolute remove favorit" @click="() => {remove_favorite()}" v-if="isfavorit"></i>
     <i class="fas fa-heart absolute add favorit" @click="() => (add_favorite())" v-else></i>
-    <router-link :to="{ name: 'Hero', params: { people_id: data.id } }" class="card text-dark" style="width: 17rem;">
+    <a class="card text-dark" style="width: 17rem;">
       <img :src="data.img" class="card-img-top" :alt="data.img">
       <div class="card-body">
         <h5 class="card-title">{{ data.name }}</h5>
+        <hr>
+        Home World:
+        <ul>
+          <li v-for="(value, name) in world" :key="name">{{name}}: {{value}}</li>
+        </ul>
       </div>
-    </router-link>
+    </a>
   </div>
 
 </template>
@@ -20,11 +25,24 @@ export default {
   name: 'Card',
 
   data: () => ({
-    isfavorit: false
+    isfavorit: false,
+    world: {
+      name: '',
+      terrain: ''
+    }
   }),
 
   computed: {
-    ...mapState(['favorite']),
+    ...mapState(['favorite', 'updatecards']),
+    homeworlds_list() {
+      this.$store.state.homeworlds_list.forEach(item => {
+        if (item.people_id === this.data.id) {
+          this.world = item.world
+          return false;
+        }
+      })
+      return this.$store.state.homeworlds_list
+    }
   },
 
   created() {
@@ -34,18 +52,48 @@ export default {
         return false;
       }
     })
+
+    let data = {
+      'people_id': this.data.id,
+      'planet_id': this.data.homeworld.split('/')[this.data.homeworld.split('/').length-2]
+    }
+    this.$store.dispatch('getHomeWorld', data)
+
+    setTimeout(() => {
+      this.homeworlds_list.forEach(item => {
+        if (item.people_id === this.data.id) {
+          this.world = item.world
+          return false;
+        }
+      })
+    }, 2000)
   },
 
-  update() {
-    this.favorite.forEach(item => {
-      if (item.id === this.data.id) {
-        this.isfavorit = true
-        return false;
-      }
-    })
+  updated() {
+    setTimeout(() => {
+      this.homeworlds_list.forEach(item => {
+        if (item.people_id === this.data.id) {
+          this.world = item.world
+          return false;
+        }
+      })
+    }, 2000)
+  },
+
+  mounted() {
+    this.UpdateCard()
   },
 
   methods: {
+    UpdateCard() {
+      this.homeworlds_list.forEach(item => {
+        if (item.people_id === this.data.id) {
+          this.world = item.world
+          return false;
+        }
+      })
+    },
+
     add_favorite() {
       let data = {
         'hero': Object.assign({}, this.data)
