@@ -1,11 +1,16 @@
 <template>
   <div class="favorite">
-    <Card v-for="(hero_, id) in favorite" :data="hero_" :key="id"/>
+    <div class="d-flex flex-wrap justify-content-center">
+      <Card v-for="(hero_, id) in favorite" :data="hero_" :key="id"/>
+    </div>
+
+    <Pagination :selected_page="1" />
   </div>
 </template>
 
 <script>
 import Card from '@/components/Card.vue'
+import Pagination from '@/components/Pagination.vue'
 import { mapState } from 'vuex'
 
 export default {
@@ -20,7 +25,8 @@ export default {
   },
 
   components: {
-    Card
+    Card,
+    Pagination
   }
 }
 </script>

@@ -17,12 +17,48 @@
     </nav>
 
     <div class="container">
-      <router-view/>
+      <div class="row">
+        <div class="col-2">
+          <div class="sticky-top sidebar">
+            <h5>Filter</h5>
+            <select class="form-control" v-model="filter">
+              <option selected value="none">None</option>
+              <option value="w">Female Heroes</option>
+              <option value="m">Male Heroes</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-10">
+          <router-view/>
+        </div>
+      </div>
     </div>
 
   </div>
 </template>
 
-<style>
+<script>
+export default {
+  name: 'App',
 
+  data: () => ({
+    filter: 'none'
+  }),
+
+  created() {
+    this.$store.dispatch('checkLocalFavorite')
+  }
+  updated() {
+    if (filter != 'none') {
+      return true
+    }
+  }
+}
+</script>
+
+<style>
+.sidebar{
+  top: 25px;
+  margin-top: 30px;
+}
 </style>

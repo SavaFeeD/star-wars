@@ -4,6 +4,13 @@ const heroes_api = 'https://swapi.dev/api'
 
 
 let actions = {
+  checkLocalFavorite({commit}) {
+    if (localStorage.getItem(`my_favorite_heroes`) == null) {
+      localStorage.setItem('my_favorite_heroes', JSON.stringify([]))
+    } else {
+      commit('SET_STATE', ['favorite', JSON.parse(localStorage.getItem(`my_favorite_heroes`))]);
+    }
+  },
 
   getHeroesPage({commit}, data) {
     axios.get(`${heroes_api}/people/?page=${data.page_number}`).then(res => {

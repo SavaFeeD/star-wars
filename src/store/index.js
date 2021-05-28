@@ -7,7 +7,8 @@ export default createStore({
   state: {
     pagination: {
       now: 1,
-      next: 2
+      next: 2,
+      count: 9
     },
     heroes: [],
     favorite: [],
@@ -19,14 +20,14 @@ export default createStore({
     expectation: false
   },
   mutations: {
-    SET_HERO(state, data) {
-      console.log(data);
+    SET_STATE(state, data) {
+      console.log('SET_STATE', data);
 
       state[data[0]] = data[1]
     },
 
     SET_HEROES(state, data) {
-      console.log(data);
+      console.log('SET_HEROES', data);
 
       data.forEach((people, people_id) => {
         people['id'] = people_id
@@ -36,7 +37,7 @@ export default createStore({
     },
 
     SET_ALERT(state, data) {
-      console.log(data);
+      console.log('SET_ALERT', data);
 
       state._alert = {
         flag: true,
@@ -45,17 +46,25 @@ export default createStore({
     },
 
     ADD_FAVORITE(state, data) {
-      console.log(data);
-
       let heroes = data.all_heroes
       heroes.push(data.hero)
 
-      state.favorite = heroes
+      state.favorite.push(data.push)
 
       heroes = JSON.stringify(heroes)
       localStorage.setItem('my_favorite_heroes', heroes)
 
       state.expectation = true
+      console.log('ADD_FAVORITE', data);
+
+    }
+  },
+  getters: {
+    female_hero: state => {
+      return state.heroes.filter(hero => hero.gender == 'female')
+    },
+    male_hero: state => {
+      return state.heroes.filter(hero => hero.gender == 'male')
     }
   },
   actions
