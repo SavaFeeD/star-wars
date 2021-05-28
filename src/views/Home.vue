@@ -1,18 +1,37 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="home d-flex flex-wrap justify-content-center">
+    <Card v-for="(hero_, id) in heroes" :data="hero_" :key="id"/>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import Card from '@/components/Card.vue'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Home',
+
+  data: () => ({
+
+  }),
+
+  computed: {
+    ...mapState(['heroes', 'pagination'])
+  },
+
+  created() {
+    let data = {
+      'page_number': this.pagination.now
+    }
+    this.$store.dispatch('getHeroesPage', data)
+  },
+
   components: {
-    HelloWorld
+    Card
   }
 }
 </script>
+
+<style scoped>
+
+</style>
