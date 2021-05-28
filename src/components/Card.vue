@@ -25,10 +25,18 @@ export default {
 
   computed: {
     ...mapState(['favorite']),
-
   },
 
   created() {
+    this.favorite.forEach(item => {
+      if (item.id === this.data.id) {
+        this.isfavorit = true
+        return false;
+      }
+    })
+  },
+
+  update() {
     this.favorite.forEach(item => {
       if (item.id === this.data.id) {
         this.isfavorit = true

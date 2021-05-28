@@ -17,8 +17,8 @@ let actions = {
       commit('SET_HEROES', res.data.results);
       commit('SET_PAGINATION', {
         'now': data.page_number,
-        'next': (res.data.next != null) ? res.data.next.split('=')[res.data.next.split('=').length-1] : null,
-        'prev': (res.data.previous != null) ? res.data.previous.split('=')[res.data.previous.split('=').length-1] : null,
+        'next': (res.data.next != null) ? +res.data.next.split('=')[res.data.next.split('=').length-1] : null,
+        'prev': (res.data.previous != null) ? +res.data.previous.split('=')[res.data.previous.split('=').length-1] : null,
         'count_heroes_on_page': res.data.results.length-1,
         'count_page': Math.round(res.data.count / res.data.results.length-1)
       });
@@ -57,7 +57,7 @@ let actions = {
 
   searchPeople({commit}, data) {
     axios.get(`${heroes_api}/people/?search=${data.people_name}`).then(res => {
-      commit('SET_STATE', ['search_result', res.data.results]);
+      commit('SET_SEARCH_RESULT', res.data.results);
     }).catch(error => {
       commit('SET_ALERT', error.response);
     })

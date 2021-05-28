@@ -10,8 +10,8 @@
         <li class="page-item"><button class="page-link" disabled v-if="pagination.prev != null">...</button></li>
         <li class="page-item"><button class="page-link" v-if="pagination.prev != null"  @click="() => {prev_page()}">{{pagination.prev}}</button></li>
         <li class="page-item active"><button class="page-link">{{pagination.now}}</button></li>
-        <li class="page-item"><button class="page-link" v-if="pagination.next != null">{{pagination.next}}</button></li>
-        <li class="page-item"><button class="page-link" disabled v-if="pagination.next != null" @click="() => {next_page()}">...</button></li>
+        <li class="page-item"><button class="page-link" v-if="pagination.next != null" @click="() => {next_page()}">{{pagination.next}}</button></li>
+        <li class="page-item"><button class="page-link" disabled v-if="pagination.next != null">...</button></li>
         <li class="page-item">
           <button class="page-link" aria-label="Next" v-if="pagination.next != null" @click="() => {next_page()}">
             <span aria-hidden="true">&raquo;</span>
@@ -32,7 +32,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['pagination'])
+    ...mapState(['pagination', 'favorite'])
   },
 
   methods: {
@@ -51,7 +51,10 @@ export default {
   },
 
   created() {
-
+    let data = {
+      'page_number': this.pagination.now
+    }
+    this.$store.dispatch('getHeroesPage', data)
   }
 }
 </script>

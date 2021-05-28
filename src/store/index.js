@@ -6,8 +6,8 @@ const heroes_img_api = 'https://starwars-visualguide.com'
 export default createStore({
   state: {
     pagination: {
-      list_count: 6,
-      count: 6,
+      count_heroes_on_page: 4,
+      count_page: 7,
       now: 1,
       next: 2,
       prev: null
@@ -25,9 +25,11 @@ export default createStore({
   },
   mutations: {
     SET_PAGINATION(state, data) {
-      state.pagination.next = data['prev']
       state.pagination.now = data['now']
       state.pagination.next = data['next']
+      state.pagination.prev = data['prev']
+      state.pagination.count_heroes_on_page = data['count_heroes_on_page']
+      state.pagination.count_page = data['count_page']
     },
 
     SET_STATE(state, data) {
@@ -35,11 +37,23 @@ export default createStore({
     },
 
     SET_HEROES(state, data) {
-      data.forEach((people, people_id) => {
-        people['id'] = people_id
-        people['img'] = `${heroes_img_api}/assets/img/characters/${people_id+1}.jpg`
+      data.forEach((people) => {
+        let id = +people.url.split('/')[people.url.split('/').length-2]
+        people['id'] = id
+        people['img'] = `${heroes_img_api}/assets/img/characters/${id}.jpg`
       });
+      console.log(data);
       state.heroes = data
+    },
+
+    SET_SEARCH_RESULT(state, data) {
+      data.forEach((people) => {
+        let id = +people.url.split('/')[people.url.split('/').length-2]
+        people['id'] = id
+        people['img'] = `${heroes_img_api}/assets/img/characters/${id}.jpg`
+      });
+      console.log(data);
+      state.search_result = data
     },
 
     SET_ALERT(state, data) {
@@ -87,8 +101,12 @@ export default createStore({
           state.filter_mode['home'] = state.heroes.filter(hero => hero.gender == 'male')
           state.filter_mode['favorite'] = state.favorite.filter(hero => hero.gender == 'male')
           break;
-        default:
+        case 'none':
           state.filter_mode = 'none'
+          break;
+        default:
+          state.filter_mode['home'] = state.heroes.filter(hero => hero.gender != 'male' && hero.gender != 'female')
+          state.filter_mode['favorite'] = state.favorite.filter(hero => hero.gender != 'male' && hero.gender != 'female')
           break;
       }
     }
